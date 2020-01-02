@@ -25,7 +25,7 @@ public class SysDatasourceConf extends Model<SysDatasourceConf> {
      */
     private String name;
     /**
-     * jdbcurl
+     * jdbc url
      */
     private String url;
     /**
