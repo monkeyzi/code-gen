@@ -30,9 +30,7 @@ public class SysGenConfig extends Model<SysGenConfig> {
 
     private String moduleName;
 
-    private Integer isTrim;
-
-    private String  tablePrefix;
+    private String projectName;
 
     private LocalDateTime createTime;
 

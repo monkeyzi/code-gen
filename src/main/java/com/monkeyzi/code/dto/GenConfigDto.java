@@ -15,6 +15,8 @@ public class GenConfigDto {
      * 数据源Id
      */
     private Integer id;
+
+    private String projectName;
     /**
      * 作者
      */
