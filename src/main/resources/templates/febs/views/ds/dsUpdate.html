@@ -1,0 +1,112 @@
+<style>
+    #ds-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="ds-update">
+    <form class="layui-form" action="" lay-filter="ds-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${ds.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name"  data-th-value="${ds.name}"
+                       lay-verify="name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">用户名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="username"  data-th-id="${ds.username}"
+                       lay-verify="username" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">密码：</label>
+            <div class="layui-input-block">
+                <input type="text" name="password"  data-th-value="${ds.password}"
+                       lay-verify="password" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">数据库类型</label>
+            <div class="layui-input-inline">
+                <select name="dbType">
+                    <option value="mysql"  check="">mysql</option>
+                    <option value="oracle">oracle</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label febs-form-item-require">jdbcUrl：</label>
+            <div class="layui-input-block">
+                <textarea name="url" minlength="20" lay-verify="range" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label febs-form-item-require">driver：</label>
+            <div class="layui-input-block">
+                <textarea name="driverClassName" lay-verify="driverClassName" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="ds-update-form-submit" id="submit"></button>
+        </div>
+
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'formSelects', 'validate'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            formSelects = layui.formSelects,
+            form = layui.form,
+            ds = [[${ds}]],
+            $view = $('#ds-update'),
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initUserValue();
+
+        formSelects.render();
+
+
+
+
+
+        function initUserValue() {
+            form.val("ds-update-form", {
+                "username": ds.username,
+                "password": ds.password,
+                "url": ds.url,
+                "driverClassName": ds.driverClassName,
+                "dbType": ds.dbType
+            });
+        }
+
+        form.on('submit(ds-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, ds)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'ds/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(ds.username + ' 数据源修改成功');
+                $('#monx-datasource').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

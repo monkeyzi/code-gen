@@ -12,10 +12,11 @@ import com.monkeyzi.code.entity.SysDatasourceConf;
 import com.monkeyzi.code.mapper.DataSourceConfMapper;
 import com.monkeyzi.code.service.DataSourceConfService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -32,22 +33,31 @@ public class DataSourceConfServiceImpl extends ServiceImpl<DataSourceConfMapper,
         if (StrUtil.isNotBlank(sysDatasourceConf.getDbType())){
             queryWrapper.lambda().eq(SysDatasourceConf::getDbType,sysDatasourceConf.getDbType());
         }
+        if (StringUtils.isNotBlank(sysDatasourceConf.getName())) {
+            queryWrapper.lambda().like(SysDatasourceConf::getName,sysDatasourceConf.getName());
+        }
         List<SysDatasourceConf> list=this.baseMapper.selectList(queryWrapper);
         return new PageInfo(list);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void saveDataSource(SysDatasourceConf sysDatasourceConf) {
         //将数据库密码加密 TODO
+        sysDatasourceConf.setCreateTime(LocalDateTime.now());
         this.baseMapper.insert(sysDatasourceConf);
         dataSourceConfig.reload();
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void updateDataSource(SysDatasourceConf sysDatasourceConf) {
+        sysDatasourceConf.setUpdateTime(LocalDateTime.now());
         this.baseMapper.updateById(sysDatasourceConf);
+        dataSourceConfig.reload();
+    }
+
+    @Override
+    public void deleteDataSource(Long id) {
+        this.baseMapper.deleteById(id);
         dataSourceConfig.reload();
     }
 

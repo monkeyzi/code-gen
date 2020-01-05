@@ -25,4 +25,6 @@ public interface DataSourceConfService extends IService<SysDatasourceConf> {
      * @param sysDatasourceConf
      */
     void updateDataSource(SysDatasourceConf sysDatasourceConf);
+
+    void deleteDataSource(Long id);
 }

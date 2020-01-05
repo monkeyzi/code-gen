@@ -1,0 +1,86 @@
+<div class="layui-fluid" id="monx-gen-config" lay-title="生成配置">
+
+                <form class="layui-form" action="" lay-filter="generator-configure-form">
+                    <div class="layui-form-item febs-hide">
+                        <label class="layui-form-label febs-form-item-require">id：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">项目名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="projectName" autocomplete="off"  lay-verify="required"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">作者名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" autocomplete="off" maxlength="20" lay-verify="required"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">基础包名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="packageName" autocomplete="off" maxlength="50"
+                                   lay-verify="required" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">模块名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="moduleName" autocomplete="off" maxlength="20"
+                                   lay-verify="required" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item febs-hide">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="gen-config-form-submit" id="submit">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form','validate'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            form = layui.form,
+            validate = layui.validate;
+            $view = $('#monx-gen-config');
+        var config = [[${config}]];
+
+        form.verify(validate);
+        form.render();
+        initFormValue();
+        function initFormValue() {
+            form.val("generator-configure-form", {
+                "id": config.id,
+                "author": config.author,
+                "packageName": config.packageName,
+                "projectName": config.projectName,
+                "moduleName": config.moduleName
+            });
+
+        }
+
+
+        form.on('submit(gen-config-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, config)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'code/config/update', data.field, function (r) {
+                layer.closeAll();
+                febs.alert.success('修改成功');
+            });
+            return false;
+        });
+    });
+</script>

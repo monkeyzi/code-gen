@@ -3,6 +3,7 @@ package com.monkeyzi.code.controller;
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.code.base.BaseController;
 import com.monkeyzi.code.base.Result;
+import com.monkeyzi.code.config.DynamicDataSourceConfig;
 import com.monkeyzi.code.dto.PageRequest;
 import com.monkeyzi.code.entity.SysDatasourceConf;
 import com.monkeyzi.code.service.DataSourceConfService;
@@ -25,6 +26,8 @@ public class DatasourceConfigController extends BaseController {
 
     @Autowired
     private DataSourceConfService dataSourceConfService;
+    @Autowired
+    private DynamicDataSourceConfig dataSourceConfig;
 
     @GetMapping("/page")
     public Result getSysDatasourceConfPage(PageRequest page, SysDatasourceConf sysDatasourceConf) {
@@ -40,7 +43,7 @@ public class DatasourceConfigController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public List list() {
+    public Result list() {
         List<Map<String,Object>> list=dataSourceConfService.list().stream()
                 .map(a->{
                     Map<String,Object> os=new HashMap<>();
@@ -48,7 +51,7 @@ public class DatasourceConfigController extends BaseController {
                     os.put("name",a.getName());
                     return os;
                 }).collect(Collectors.toList());
-        return list;
+        return Result.ok(list);
     }
 
 
@@ -71,7 +74,7 @@ public class DatasourceConfigController extends BaseController {
      * @param sysDatasourceConf 数据源表
      */
     @PostMapping(value = "save")
-    public Result save(@RequestBody SysDatasourceConf sysDatasourceConf) {
+    public Result save(SysDatasourceConf sysDatasourceConf) {
         this.dataSourceConfService.saveDataSource(sysDatasourceConf);
         return Result.ok("数据源新增成功！");
     }
@@ -82,7 +85,7 @@ public class DatasourceConfigController extends BaseController {
      * @return
      */
     @PostMapping(value = "update")
-    public Result updateById(@RequestBody SysDatasourceConf sysDatasourceConf) {
+    public Result updateById (SysDatasourceConf sysDatasourceConf) {
         this.dataSourceConfService.updateDataSource(sysDatasourceConf);
         return Result.ok("ok！");
     }
@@ -93,8 +96,8 @@ public class DatasourceConfigController extends BaseController {
      * @return
      */
     @PostMapping("remove/{id}")
-    public Result removeById(@PathVariable Integer id) {
-        this.dataSourceConfService.removeById(id);
+    public Result removeById(@PathVariable Long id) {
+        this.dataSourceConfService.deleteDataSource(id);
         return Result.ok("ok");
     }
 

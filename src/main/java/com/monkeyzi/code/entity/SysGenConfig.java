@@ -22,7 +22,7 @@ public class SysGenConfig extends Model<SysGenConfig> {
     private static final long serialVersionUID = 1L;
 
     @TableId
-    private Integer id;
+    private Long id;
 
     private String author;
 

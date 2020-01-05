@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monkeyzi.code.mapper.SysMenuMapper">
+    <resultMap id="menuMap" type="com.monkeyzi.code.entity.SysMenu">
+        <result column="id"  property="id" />
+        <result column="menu_name" property="menuName" />
+        <result column="parent_id"  property="parentId" />
+        <result column="url"  property="url" />
+        <result column="perms"  property="perms" />
+        <result column="icon"  property="icon" />
+        <result column="type"  property="type" />
+        <result column="order_num"  property="orderNum" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time"  property="updateTime" />
+    </resultMap>
+    <sql id="menuColumnList">
+        m.id,
+        m.menu_name,
+        m.parent_id,
+        m.url,
+        m.perms,
+        m.icon,
+        m.type,
+        m.order_num,
+        m.create_time,
+        m.update_time
+    </sql>
+
+    <select id="findUserPermissions" resultMap="menuMap">
+        SELECT
+            m.perms
+        FROM
+            sys_role r
+        LEFT JOIN sys_user_role ur ON (r.id = ur.role_id)
+        LEFT JOIN sys_user u ON (u.id = ur.user_id)
+        LEFT JOIN sys_role_menu rm ON (rm.role_id = r.id)
+        LEFT JOIN sys_menu m ON (m.id = rm.menu_id)
+        WHERE
+            u.id = #{userId}
+        AND m.perms is not null
+        AND m.perms &lt;&gt; ''
+    </select>
+    <select id="findUserMenus" resultType="com.monkeyzi.code.entity.SysMenu">
+        SELECT
+            <include refid="menuColumnList"/>
+        FROM
+            sys_menu m
+        WHERE
+            m.type &lt;&gt; 1
+        AND m.id IN (
+            SELECT DISTINCT
+                rm.menu_id
+            FROM
+                sys_role_menu rm
+            LEFT JOIN sys_role r ON (rm.role_id = r.id)
+            LEFT JOIN sys_user_role ur ON (ur.role_id = r.id)
+            LEFT JOIN sys_user u ON (u.id = ur.user_id)
+            WHERE
+                u.id = #{id}
+        )
+        ORDER BY
+          m.order_num
+    </select>
+</mapper>

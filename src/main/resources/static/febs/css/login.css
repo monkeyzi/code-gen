@@ -1,0 +1,109 @@
+#npms-login {
+    background:#f0f2f5 url(../images/background.jpg) no-repeat;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    webkit-animation: animate-cloud 20s linear infinite;
+    animation: animate-cloud 20s linear infinite;
+}
+
+#npms-login .login-wrap {
+    width: 100%;
+}
+#npms-login .layui-form {
+    position: relative;
+    padding: 55px 40px;
+    margin:0 auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 7px 25px rgba(0,0,0,.08);
+    box-shadow: 0 7px 25px rgba(0,0,0,.08);
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+#npms-login .login-tip {
+    color: #409eff;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0 0 20px 0;
+}
+#login{
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    letter-spacing: 5px;
+    text-indent: 5px;
+    font-weight: 300;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 30px;
+    font-family: neo;
+    -webkit-transition: .25s;
+    transition: .25s;
+}
+
+#npms-login .layui-form-item {
+    position:relative
+}
+#npms-login .verify-block {
+    display:none
+}
+#npms-login .layui-input {
+    text-indent:26px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    outline:0;
+}
+#npms-login .layui-input:focus,active,hover{
+    outline: 0!important;
+}
+#npms-login .codeimg {
+    margin-left:10px;
+    cursor:pointer
+}
+#npms-login .qrcode-block {
+    text-align:center;
+    display:none
+}
+#npms-login .qrcode-block .qrcode {
+    border:1px solid #eee;
+    display:inline-block;
+    padding:15px;
+    margin:30px 0;
+    width:158px;
+    height:158px
+}
+#npms-login .qrcode-block .qrcode .layui-icon {
+    line-height:158px;
+    font-size:44px;
+    color:#409eff
+}
+#npms-login .qrcode-block .p1 {
+    font-size:16px
+}
+#npms-login .qrcode-block .p2 {
+    font-size:14px;
+    color:#999;
+    margin-top:10px;
+    margin-bottom:20px
+}
+#npms-login .layui-form-item .label-icon {
+    position:absolute;
+    top:0;
+    left:0;
+    width:38px;
+    line-height:38px;
+    text-align:center;
+    color:#409eff!important
+}
+.footer {
+    text-align:center;
+    padding:.5rem 1rem 1rem
+}

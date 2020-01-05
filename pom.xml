@@ -30,6 +30,7 @@
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
         <apache.commons.io.version>2.6</apache.commons.io.version>
         <apache.commons-configuration.version>1.10</apache.commons-configuration.version>
+        <easyCaptcha.version>1.6.2</easyCaptcha.version>
     </properties>
 
     <dependencies>
@@ -148,6 +149,17 @@
             <groupId>com.github.theborakompanioni</groupId>
             <artifactId>thymeleaf-extras-shiro</artifactId>
             <version>${thymeleaf-extras-shiro.version}</version>
+        </dependency>
+        <!-- 验证码生成工具 -->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>${easyCaptcha.version}</version>
+        </dependency>
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

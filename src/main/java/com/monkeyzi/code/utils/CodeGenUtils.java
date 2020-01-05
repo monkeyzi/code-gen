@@ -48,7 +48,7 @@ public class CodeGenUtils {
         return templates;
     }
 
-    private final String PROJECT_NAME="code-gen";
+    private final String PROJECT_NAME="code-ds";
     private final String ENTITY_JAVA_VM = "Entity.java.vm";
     private final String MAPPER_JAVA_VM = "Mapper.java.vm";
     private final String SERVICE_JAVA_VM = "Service.java.vm";

@@ -1,0 +1,196 @@
+<style>
+    .user-info-head {
+        width: 110px;
+        height: 110px;
+        position: relative;
+        display: inline-block;
+        border-radius: 50%;
+        border: 2px solid #eee;
+    }
+    .user-info-head img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .info-list-item {
+        position: relative;
+        padding-bottom: 8px;
+    }
+    .info-list-item > .layui-icon {
+        position: absolute;
+    }
+    .info-list-item > p {
+        padding-left: 30px;
+    }
+    .dash {
+        border-bottom: 1px dashed #ccc;
+        margin: 15px 0;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="febs-user-profile" lay-title="个人中心">
+    <div class="layui-row layui-col-space8 febs-container">
+        <!-- 左 -->
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding: 25px;">
+                    <div class="text-center layui-text">
+                        <div class="user-info-head" id="imgHead">
+                            <img data-th-src="@{febs/images/avatar/20180414165815.jpg}">
+                        </div>
+                        <h2 style="padding-top: 20px;">Serati Ma</h2>
+                        <p style="padding-top: 8px;">海纳百川，有容乃大</p>
+                    </div>
+                    <div class="layui-text" style="padding-top: 30px;">
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-username"></i>
+                            <p>交互专家</p>
+                        </div>
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-release"></i>
+                            <p>某某公司－某某某事业群－某某平台部－某某技术部－UED</p>
+                        </div>
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-location"></i>
+                            <p>浙江省杭州市</p>
+                        </div>
+                    </div>
+                    <div class="dash"></div>
+                    <h3>标签</h3>
+                    <div class="layui-badge-list" style="padding-top: 6px;">
+                        <span class="layui-badge layui-bg-gray">很有想法的</span>
+                        <span class="layui-badge layui-bg-gray">专注设计</span>
+                        <span class="layui-badge layui-bg-gray">辣~</span>
+                        <span class="layui-badge layui-bg-gray">大长腿</span>
+                        <span class="layui-badge layui-bg-gray">川妹子</span>
+                        <span class="layui-badge layui-bg-gray">海纳百川</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右 -->
+        <div class="layui-col-sm12 layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-body layui-text">
+
+                    <div class="layui-tab layui-tab-brief" lay-filter="userInfoTab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">基本信息</li>
+                            <li>主题风格</li>
+                            <li>账号绑定</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+
+                                <div class="layui-form user-info-form" style="max-width: 400px;padding-top: 25px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">邮箱:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="email" value="antdesign@alipay.com" class="layui-input" lay-verify="required" required="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">昵称:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="name" value="Serati Ma" class="layui-input" lay-verify="required" required="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">个人简介:</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="desc" placeholder="个人简介" class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">街道地址:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="address" value="西湖区工专路 77 号" class="layui-input" lay-verify="required" required="">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">联系电话:</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="phone1" value="0752" style="width: 60px;" class="layui-input" lay-verify="required" required="">
+                                            <div style="position: absolute;left: 65px;right: 0;top: 0;">
+                                                <input type="text" name="phone2" value="268888888" class="layui-input" lay-verify="required" required="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-filter="userInfoSubmit" lay-submit="">
+                                                更新基本信息
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="layui-tab-item">
+                                <div class="layui-card-body">
+                                    <form class="layui-form" action="" lay-filter="system-setting-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" style="width: 85px">侧边栏风格：</label>
+                                            <div class="layui-input-block">
+                                                <input type="radio" name="theme" lay-filter="theme" value="black" checked="" title="深邃">
+                                                <input type="radio" name="theme" lay-filter="theme" value="white" title="明亮">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" style="width: 85px">选项卡开关：</label>
+                                            <div class="layui-input-block">
+                                                <input type="radio" name="isTab" lay-filter="tab" value="1" checked="" title="开启">
+                                                <input type="radio" name="isTab" lay-filter="tab" value="0" title="关闭">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" id="submit-form" lay-submit="" lay-filter="system-setting-form-submit" >
+                                                    保存
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="layui-tab-item" style="padding: 6px 25px 30px 25px;">
+                                待开发
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'febs'], function () {
+        var $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            _currentData = {
+                theme: currentUser.theme,
+                isTab: currentUser.isTab
+            },
+            $view = $('#febs-user-profile');
+
+        form.render();
+        initSettings();
+        function initSettings() {
+            form.val("system-setting-form", _currentData);
+        }
+        form.on('submit(system-setting-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, _currentData)) {
+                febs.alert.warn('数据未作任何修改');
+                return false;
+            }
+            return false;
+        });
+
+    })
+</script>

@@ -1,0 +1,159 @@
+<div class="layui-fluid layui-anim febs-anim" id="monx-gen" lay-title="代码生成">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="gen-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">数据源</label>
+                                        <div class="layui-input-inline">
+                                            <select name="datasource" id="datasource">
+                                                <option value="">请选择数据源</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">表名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tableName" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-success table-action" title="查询" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-warm table-action" title="重置" id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn table-action" title="生成配置" id="genConfig"
+                                     shiro:hasAnyPermissions="ds:view">
+                                    <i class="layui-icon">生成配置</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="genTable" lay-data="{id: 'genTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/html" id="gen-option">
+    <span shiro:lacksPermission="gen:view">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="edit" shiro:hasPermission="gen:view"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del" shiro:hasPermission="gen:view"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+        var $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            $view = $('#monx-gen'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#reset'),
+            $gen = $view.find('#genConfig'),
+            $searchForm = $view.find('form'),
+            tableIns;
+
+        form.render();
+        //渲染下拉框
+        febs.get(ctx + 'ds/list', null, function (r) {
+            if (r.code===0){
+                var data=r.data;
+                data.forEach(function (item,index) {
+                    $('#datasource').append(new Option(item.name, item.id));
+                })
+                form.render("select");
+            } else {
+                febs.alert.error('请求数据源失败');
+            }
+        });
+
+
+        initTable();
+
+
+
+        table.on('tool(genTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'edit') {
+                febs.modal.open('代码生成', 'gen/code/' + data.tableName, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        $('#monx-gen-config').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+
+
+        $query.on('click', function () {
+            var params = $.extend(getQueryParams(), {});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}});
+        });
+
+        $gen.on('click', function () {
+            febs.modal.open('生成配置', 'code/config', {
+                area: $(window).width() <= 750 ? '90%' : '50%',
+                btn: ['提交', '取消'],
+                yes: function (index, layero) {
+                    $('#monx-gen-config').find('#submit').trigger('click');
+                },
+                btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'genTable',
+                url: ctx + 'gen/page',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'tableName', title: '表名称'},
+                    {field: 'tableComment', title: '表注释'},
+                    {field: 'createTime', title: '创建时间'},
+                    {field: 'updateTime', title: '修改时间'},
+                    {title: '操作', toolbar: '#gen-option', minWidth: 140}
+                ]]
+            });
+        }
+
+
+        function getQueryParams() {
+            return {
+                tableName: $searchForm.find('input[name="tableName"]').val().trim(),
+                datasource: $searchForm.find("select[name='datasource']").val(),
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+
+    })
+</script>

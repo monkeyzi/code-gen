@@ -3,7 +3,6 @@ package com.monkeyzi.code.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.monkeyzi.code.constant.DataSourceConstants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +13,6 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.annotation.PostConstruct;
-import java.sql.Driver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +63,9 @@ public class DynamicDataSourceConfig  implements TransactionManagementConfigurer
 
             String decPwd = ((String) db.get(DataSourceConstants.DS_USER_PWD));
             ds.setPassword(decPwd);
+            if (dataSourceMap.containsKey(db.get(DataSourceConstants.DS_ROUTE_KEY))){
+                dataSourceMap.remove(db.get(DataSourceConstants.DS_ROUTE_KEY));
+            }
             dataSourceMap.put(db.get(DataSourceConstants.DS_ROUTE_KEY), ds);
         }));
 

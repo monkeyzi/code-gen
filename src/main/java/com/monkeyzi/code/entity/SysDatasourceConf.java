@@ -19,7 +19,7 @@ public class SysDatasourceConf extends Model<SysDatasourceConf> {
      * 主键
      */
     @TableId
-    private Integer id;
+    private Long id;
     /**
      * 名称
      */

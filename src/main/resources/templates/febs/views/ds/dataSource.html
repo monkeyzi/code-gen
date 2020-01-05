@@ -1,0 +1,209 @@
+<div class="layui-fluid layui-anim febs-anim" id="monx-datasource" lay-title="数据源管理">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="ds-table-form">
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">数据库类型</label>
+                                        <div class="layui-input-inline">
+                                            <select name="dbType">
+                                                <option value=""></option>
+                                                <option value="mysql">mysql</option>
+                                                <option value="oracle">oracle</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">创建时间</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="createTime" id="createTime" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-success table-action" title="查询" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn table-action" title="重置" id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-warm table-action action-more"
+                                     shiro:hasAnyPermissions="ds:view">
+                                    <i class="layui-icon">&#xe875;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="datasourceTable" lay-data="{id: 'datasourceTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--处理表格列数据库类型-->
+<script type="text/html" id="db_type">
+    {{#
+    var dbType = {
+    mysql: {title: 'mysql', color: 'orange'},
+    oracle: {title: 'oracle', color: 'volcano'}
+    }[d.dbType];
+    }}
+    <span class="layui-badge febs-tag-{{dbType.color}}">{{ dbType.title }}</span>
+</script>
+
+<script type="text/html" id="ds-option">
+    <span shiro:lacksPermission="ds:view">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="edit" shiro:hasPermission="ds:view"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del" shiro:hasPermission="ds:view"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs'], function () {
+        var $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#monx-datasource'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('form'),
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        laydate.render({
+            elem: '#createTime',
+            range: true,
+            trigger: 'click'
+        });
+        /* 更多操作
+        * */
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+                if (name === 'add') {
+                    febs.modal.open('新增数据源', 'ds/add', {
+                        btn: ['提交', '重置'],
+                        area: $(window).width() <= 750 ? '95%' : '50%',
+                        yes: function (index, layero) {
+                            $('#ds-add').find('#submit').trigger('click');
+                        },
+                        btn2: function () {
+                            $('#ds-add').find('#reset').trigger('click');
+                            return false;
+                        }
+                    });
+                }
+            },
+            options: [{
+                name: 'add',
+                title: '新增',
+                perms: 'ds:view'
+            }]
+        });
+
+
+        table.on('tool(datasourceTable)', function (obj) {
+            var data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'edit') {
+                febs.modal.open('修改数据源', 'ds/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#ds-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除数据源', "确定删除"+data.name+"数据源？", function () {
+                    deleteDatasource(data.id);
+                });
+            }
+        });
+
+        table.on('sort(datasourceTable)', function (obj) {
+            tableIns.reload({
+                where: $.extend(getQueryParams(), {})
+            });
+        });
+
+        $query.on('click', function () {
+            var params = $.extend(getQueryParams(), {});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            tableIns.reload({where: getQueryParams(), page: {curr: 1}});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'datasourceTable',
+                url: ctx + 'ds/page',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'name', title: '名称'},
+                    {title: 'jdbcUrl', field: 'url', minWidth: 180},
+                    {field: 'username', title: '用户名'},
+                    {field: 'password', title: '密码'},
+                    {field: 'driverClassName', title: 'driver', minWidth: 180},
+                    {field: 'dbType',title: '数据库类型', templet: '#db_type'},
+                    {field: 'createTime', title: '创建时间'},
+                    {field: 'updateTime', title: '更新时间'},
+                    {title: '操作', toolbar: '#ds-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        /**
+         * 查询条件
+         * @returns {{createTimeFrom: *, createTimeTo: *, name: string | *, dbType: (*|void), invalidate_ie_cache: Date}}
+         */
+        function getQueryParams() {
+            var createTimeFrom,
+                createTimeTo,
+                createTime = $searchForm.find('input[name="createTime"]').val();
+            if (createTime) {
+                createTimeFrom = createTime.split(' - ')[0];
+                createTimeTo = createTime.split(' - ')[1];
+            }
+            return {
+                createTimeFrom: createTimeFrom,
+                createTimeTo: createTimeTo,
+                name: $searchForm.find('input[name="name"]').val().trim(),
+                dbType: $searchForm.find("select[name='dbType']").val(),
+                invalidate_ie_cache: new Date()
+            };
+        }
+
+        function deleteDatasource(id) {
+            febs.post(ctx + 'ds/remove/' + id, null, function () {
+                febs.alert.success('删除数据源成功');
+                $query.click();
+            });
+        }
+    })
+</script>
