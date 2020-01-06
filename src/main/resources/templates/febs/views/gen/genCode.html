@@ -53,10 +53,16 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label febs-form-item-require">表前缀：</label>
                         <div class="layui-input-block">
-                            <input type="text" name="trimValue" autocomplete="off" maxlength="20" class="layui-input">
+                            <input type="text" name="tablePrefix" lay-verify="required" autocomplete="off" maxlength="20" class="layui-input">
                         </div>
                     </div>
-
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">表备注：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="comments" placeholder="可为空，为空加载数据表备注！" autocomplete="off" maxlength="30"
+                                   class="layui-input">
+                        </div>
+                    </div>
                     <div class="layui-form-item febs-hide">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit="" lay-filter="gen-config-form-submit" id="submit">
@@ -73,7 +79,7 @@
             form = layui.form,
             validate = layui.validate;
             $view = $('#monx-gen-code'),
-            $trimValue = $view.find('input[name="trimValue"]'),
+            $trimValue = $view.find('input[name="tablePrefix"]'),
             $trimValueItem = $trimValue.parents('.layui-form-item');
 
         var config = [[${config}]];
@@ -103,13 +109,15 @@
         });
 
         function trimValueItemShow() {
+            $trimValue.attr("lay-verify","required")
             $trimValueItem.show();
         }
 
         function trimValueItemHide() {
             form.val("generator-configure-form", {
-                "trimValue": ''
+                "tablePrefix": ''
             });
+            $trimValue.removeAttr("lay-verify")
             $trimValueItem.hide();
         }
 

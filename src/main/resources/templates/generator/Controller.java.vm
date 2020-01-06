@@ -1,13 +1,13 @@
 package ${package}.${moduleName}.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pigx.common.core.util.R;
-import com.pig4cloud.pigx.common.log.annotation.SysLog;
+import com.github.pagehelper.PageInfo;
+import com.monkeyzi.code.base.BaseController;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.monkeyzi.code.base.Result;
+import com.monkeyzi.code.dto.PageRequest;
 import ${package}.${moduleName}.entity.${className};
 import ${package}.${moduleName}.service.${className}Service;
-import org.springframework.security.access.prepost.PreAuthorize;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,68 +18,71 @@ import org.springframework.web.bind.annotation.*;
  * @date ${datetime}
  */
 @RestController
-@AllArgsConstructor
 @RequestMapping("/${pathName}" )
-public class ${className}Controller {
+public class ${className}Controller extends BaseController{
 
-    private final  ${className}Service ${classname}Service;
+    @Autowired
+    private ${className}Service ${classname}Service;
 
     /**
      * 分页查询
      * @param page 分页对象
-     * @param ${classname} ${comments}
-     * @return
+     * @param ${classname}
+     * @return Result
      */
     @GetMapping("/page" )
-    public R get${className}Page(Page page, ${className} ${classname}) {
-        return new R<>(${classname}Service.page(page, Wrappers.query(${classname})));
+    public Result get${className}Page(PageRequest page, ${className} ${classname}) {
+        PageInfo pageInfo=${classname}Service.pageQuery(page,${classname});
+        Map<String,Object> results=super.getDataTable(pageInfo);
+        return Result.ok(results);
     }
 
 
     /**
      * 通过id查询${comments}
      * @param ${pk.lowerAttrName} id
-     * @return R
+     * @return Result
      */
     @GetMapping("/{${pk.lowerAttrName}}" )
-    public R getById(@PathVariable("${pk.lowerAttrName}" ) ${pk.attrType} ${pk.lowerAttrName}) {
-        return new R<>(${classname}Service.getById(${pk.lowerAttrName}));
+    public Result getById(@PathVariable("${pk.lowerAttrName}" ) ${pk.attrType} ${pk.lowerAttrName}) {
+        ${className} ${classname}=${classname}Service.getById(${pk.lowerAttrName});
+        return return Result.ok(${classname});
     }
 
     /**
      * 新增${comments}
-     * @param ${classname} ${comments}
-     * @return R
+     * @param ${classname}
+     * @return Result
      */
-    @SysLog("新增${comments}" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_add')" )
-    public R save(@RequestBody ${className} ${classname}) {
-        return new R<>(${classname}Service.save(${classname}));
+    @RequiresPermissions("${moduleName}:${pathName}:add")
+    public Result save(@RequestBody ${className} ${classname}) {
+        ${classname}Service.save(${classname})
+        return Result.ok("success");
     }
 
     /**
      * 修改${comments}
-     * @param ${classname} ${comments}
-     * @return R
+     * @param ${classname}
+     * @return Result
      */
-    @SysLog("修改${comments}" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_edit')" )
-    public R updateById(@RequestBody ${className} ${classname}) {
-        return new R<>(${classname}Service.updateById(${classname}));
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    public Result updateById(@RequestBody ${className} ${classname}) {
+        ${classname}Service.updateById(${classname})
+        return Result.ok("success");
     }
 
     /**
      * 通过id删除${comments}
      * @param ${pk.lowerAttrName} id
-     * @return R
+     * @return Result
      */
-    @SysLog("删除${comments}" )
     @DeleteMapping("/{${pk.lowerAttrName}}" )
-    @PreAuthorize("@pms.hasPermission('${moduleName}_${pathName}_del')" )
-    public R removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {
-        return new R<>(${classname}Service.removeById(${pk.lowerAttrName}));
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    public Result removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {
+        ${classname}Service.removeById(${pk.lowerAttrName})
+        return Result.ok("success");
     }
 
 }

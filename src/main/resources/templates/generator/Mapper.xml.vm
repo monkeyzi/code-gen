@@ -11,4 +11,13 @@
       #end
     #end
   </resultMap>
+  <sql id="${classname}Column">
+    #foreach($column in $columns)
+      #if($column.lowerAttrName==$pk.lowerAttrName)
+         ${pk.columnName},
+      #else
+         ${column.columnName},
+      #end
+    #end
+  </sql>
 </mapper>

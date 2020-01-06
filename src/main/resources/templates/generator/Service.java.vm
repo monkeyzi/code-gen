@@ -1,6 +1,8 @@
 package ${package}.${moduleName}.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.monkeyzi.code.dto.PageRequest;
 import ${package}.${moduleName}.entity.${className};
 
 /**
@@ -11,4 +13,5 @@ import ${package}.${moduleName}.entity.${className};
  */
 public interface ${className}Service extends IService<${className}> {
 
+    PageInfo pageQuery(PageRequest,page,${className} ${classname});
 }

@@ -10,7 +10,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label">数据源</label>
                                         <div class="layui-input-inline">
-                                            <select name="datasource" id="datasource">
+                                            <select name="datasource" lay-filter="dsSelect" id="datasource">
                                                 <option value="">请选择数据源</option>
                                             </select>
                                         </div>
@@ -103,7 +103,10 @@
                 });
             }
         });
-
+        form.on('select(dsSelect)', function(data){
+            var params = $.extend(getQueryParams(), {});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
 
 
         $query.on('click', function () {

@@ -36,6 +36,10 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 @UtilityClass
 public class CodeGenUtils {
+    /**
+     * 去掉表前缀
+     */
+    private static final Integer TRIM_PRIX_YES=1;
 
     private List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
@@ -65,7 +69,6 @@ public class CodeGenUtils {
      */
     public void generatorCode(GenConfigDto genConfig, Map<String, String> table,
                               List<Map<String, String>> columns, ZipOutputStream zip) {
-
         Configuration config=getConfig();
         //列属性是否含有 bigDecimal
         boolean hasBigDecimal = false;
@@ -79,7 +82,7 @@ public class CodeGenUtils {
             tableEntity.setComments(table.get("tableComment"));
         }
         String tablePrefix="";
-        if (genConfig.getIsTrim().equals("是")){
+        if (TRIM_PRIX_YES.equals(genConfig.getIsTrim())){
             tablePrefix=genConfig.getTablePrefix();
         }
         //java类名
@@ -95,7 +98,6 @@ public class CodeGenUtils {
             columnEntity.setColumnName(column.get("columnName"));
             columnEntity.setDataType(column.get("dataType"));
             columnEntity.setComments(column.get("columnComment"));
-            columnEntity.setExtra(column.get("extra"));
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             columnEntity.setCaseAttrName(attrName);
@@ -107,7 +109,9 @@ public class CodeGenUtils {
                 hasBigDecimal = true;
             }
             //是否主键
-            if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
+            if ("PRI".equalsIgnoreCase(column.get("columnKey"))
+                    ||"P".equalsIgnoreCase(column.get("columnKey"))
+                    && tableEntity.getPk() == null) {
                 tableEntity.setPk(columnEntity);
             }
             columnList.add(columnEntity);
@@ -146,7 +150,6 @@ public class CodeGenUtils {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
             tpl.merge(context, sw);
-
             try {
                 //添加到zip
                 zip.putNextEntry(new ZipEntry(Objects

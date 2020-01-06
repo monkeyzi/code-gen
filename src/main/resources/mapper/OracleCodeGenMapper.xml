@@ -37,20 +37,19 @@
 	</select>
     <!--查询表的列信息-->
 	<select id="queryColumns" resultType="map">
-         SELECT a.COLUMN_NAME as "columnName",
-                a.data_type as "dataType",
-                b.comments as  "columnComment",
-                c.constraint_type  "columnKey"
-			FROM user_tab_columns a LEFT JOIN
-			user_col_comments b on a.column_name = b.column_name
-			left join  user_constraints c on a.table_name=c.table_name
-			WHERE a.table_name = #{tableName} AND a.table_name = b.table_name
-
-			SELECT a.COLUMN_NAME as  columnName,
-			       a.data_type as    dataType,
-			       b.comments as     columnComment,
-			       c.constraint_type columnKey
-			FROM user_tab_columns a LEFT JOIN user_col_comments b on a.column_name = b.column_name
-			WHERE a.table_name = #{tableName} AND a.table_name = b.table_name
+         SELECT
+			A .column_name AS "columnName",
+			A .data_type AS "dataType",
+			b.comments AS "columnComment",
+		    c.constraint_type "columnKey"
+		FROM
+			user_tab_columns A
+		LEFT JOIN user_col_comments b ON A .column_name = b.column_name
+		LEFT JOIN (SELECT a.table_name,a.column_name,b.constraint_type from user_cons_columns a,user_constraints b
+		where a.constraint_name=b.constraint_name and b.constraint_type='P' and b.table_name=#{table_name}) c
+		on a.column_name=c.column_name
+		WHERE
+			A .table_name = #{tableName}
+		AND A .table_name = b.table_name
 	</select>
 </mapper>
