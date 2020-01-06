@@ -50,9 +50,8 @@
     <span shiro:lacksPermission="gen:view">
         <span class="layui-badge-dot febs-bg-orange"></span> 无权限
     </span>
-    <a lay-event="edit" shiro:hasPermission="gen:view"><i
-            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
-    <a lay-event="del" shiro:hasPermission="gen:view"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+    <a lay-event="gen" shiro:hasPermission="gen:view"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe82a;</i></a>
 </script>
 
 <script data-th-inline="none" type="text/javascript">
@@ -88,14 +87,15 @@
 
 
         table.on('tool(genTable)', function (obj) {
-            var data = obj.data,
-                layEvent = obj.event;
-            if (layEvent === 'edit') {
-                febs.modal.open('代码生成', 'gen/code/' + data.tableName, {
+            var data=obj.data;
+            var id=$searchForm.find("select[name='datasource']").val();
+            var layEvent = obj.event;
+            if (layEvent === 'gen') {
+                febs.modal.open('代码生成', 'gen/genCode'+'?tableName='+data.tableName+'&id='+id, {
                     area: $(window).width() <= 750 ? '90%' : '50%',
                     btn: ['确定', '取消'],
                     yes: function (index, layero) {
-                        $('#monx-gen-config').find('#submit').trigger('click');
+                        $('#monx-gen-code').find('#submit').trigger('click');
                     },
                     btn2: function () {
                         layer.closeAll();
@@ -129,6 +129,9 @@
         });
 
 
+
+
+
         function initTable() {
             tableIns = febs.table.init({
                 elem: $view.find('table'),
@@ -149,7 +152,7 @@
         function getQueryParams() {
             return {
                 tableName: $searchForm.find('input[name="tableName"]').val().trim(),
-                datasource: $searchForm.find("select[name='datasource']").val(),
+                id: $searchForm.find("select[name='datasource']").val(),
                 invalidate_ie_cache: new Date()
             };
         }

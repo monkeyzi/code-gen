@@ -152,20 +152,19 @@ layui
             };
 
             self.loadHtml = function (url, callback) {
+                console.log(url)
                 url = url || conf.entry;
                 loadBar.start();
-                var queryIndex = url.indexOf('?');
-                if (queryIndex !== -1) url = url.slice(0, queryIndex);
+                //var queryIndex = url.indexOf('?');
+                //if (queryIndex !== -1) url = url.slice(0, queryIndex);
                 $.ajax({
                     url:
                         (url.indexOf(conf.base) === 0 ? '' : conf.views) +
                         url +
-                        conf.engine +
-                        '?v=' +
-                        conf.v,
+                        conf.engine,
                     type: 'get',
                     data: {
-                        'invalid_ie_cache': new Date().getTime()
+
                     },
                     dataType: 'html',
                     success: function (r) {

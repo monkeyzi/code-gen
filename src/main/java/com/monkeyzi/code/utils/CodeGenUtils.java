@@ -39,16 +39,15 @@ public class CodeGenUtils {
 
     private List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
-        templates.add("template/generator/Entity.java.vm");
-        templates.add("template/generator/Mapper.java.vm");
-        templates.add("template/generator/Mapper.xml.vm");
-        templates.add("template/generator/Service.java.vm");
-        templates.add("template/generator/ServiceImpl.java.vm");
-        templates.add("template/generator/Controller.java.vm");
+        templates.add("templates/generator/Entity.java.vm");
+        templates.add("templates/generator/Mapper.java.vm");
+        templates.add("templates/generator/Mapper.xml.vm");
+        templates.add("templates/generator/Service.java.vm");
+        templates.add("templates/generator/ServiceImpl.java.vm");
+        templates.add("templates/generator/Controller.java.vm");
         return templates;
     }
 
-    private final String PROJECT_NAME="code-ds";
     private final String ENTITY_JAVA_VM = "Entity.java.vm";
     private final String MAPPER_JAVA_VM = "Mapper.java.vm";
     private final String SERVICE_JAVA_VM = "Service.java.vm";

@@ -1,0 +1,125 @@
+<div class="layui-fluid" id="monx-gen-code" lay-title="代码生成">
+
+                <form class="layui-form" action="" lay-filter="generator-configure-form">
+                    <div class="layui-form-item febs-hide">
+                        <label class="layui-form-label febs-form-item-require">dsId：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item febs-hide">
+                        <label class="layui-form-label febs-form-item-require">tableName：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="tableName" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">项目名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="projectName" autocomplete="off"  lay-verify="required"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">作者名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" autocomplete="off" maxlength="20" lay-verify="required"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">基础包名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="packageName" autocomplete="off" maxlength="50"
+                                   lay-verify="required" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">模块名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="moduleName" autocomplete="off" maxlength="20"
+                                   lay-verify="required" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">去除表前缀：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="isTrim" value="1" lay-filter="isTrim" title="是" checked="">
+                            <input type="radio" name="isTrim" value="0" lay-filter="isTrim" title="否">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label febs-form-item-require">表前缀：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="trimValue" autocomplete="off" maxlength="20" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item febs-hide">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="gen-config-form-submit" id="submit">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form','validate'], function () {
+        var $ = layui.$,
+            febs = layui.febs,
+            form = layui.form,
+            validate = layui.validate;
+            $view = $('#monx-gen-code'),
+            $trimValue = $view.find('input[name="trimValue"]'),
+            $trimValueItem = $trimValue.parents('.layui-form-item');
+
+        var config = [[${config}]];
+        console.log(config);
+        form.verify(validate);
+        form.render();
+
+        initFormValue();
+
+        function initFormValue() {
+            form.val("generator-configure-form", {
+                "id": config.dsId,
+                "tableName": config.tableName,
+                "author": config.author,
+                "packageName": config.packageName,
+                "projectName": config.projectName,
+                "moduleName": config.moduleName
+            });
+        }
+
+        form.on("radio(isTrim)", function (data) {
+            if (data.value === '1') {
+                trimValueItemShow();
+            } else {
+                trimValueItemHide();
+            }
+        });
+
+        function trimValueItemShow() {
+            $trimValueItem.show();
+        }
+
+        function trimValueItemHide() {
+            form.val("generator-configure-form", {
+                "trimValue": ''
+            });
+            $trimValueItem.hide();
+        }
+
+
+        form.on('submit(gen-config-form-submit)', function (data) {
+            var d=data.field;
+            febs.modal.confirm('代码生成', '确定生成数据表<strong> ' + d.tableName + ' </strong>对应的代码？', function () {
+                febs.download(ctx + 'gen/code', d, d.tableName + '_code.zip');
+            });
+            return false;
+        });
+    });
+</script>

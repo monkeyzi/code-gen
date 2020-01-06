@@ -3,7 +3,6 @@ package com.monkeyzi.code.controller;
 import com.github.pagehelper.PageInfo;
 import com.monkeyzi.code.base.BaseController;
 import com.monkeyzi.code.base.Result;
-import com.monkeyzi.code.config.DynamicDataSourceConfig;
 import com.monkeyzi.code.dto.PageRequest;
 import com.monkeyzi.code.entity.SysDatasourceConf;
 import com.monkeyzi.code.service.DataSourceConfService;
@@ -26,8 +25,6 @@ public class DatasourceConfigController extends BaseController {
 
     @Autowired
     private DataSourceConfService dataSourceConfService;
-    @Autowired
-    private DynamicDataSourceConfig dataSourceConfig;
 
     @GetMapping("/page")
     public Result getSysDatasourceConfPage(PageRequest page, SysDatasourceConf sysDatasourceConf) {

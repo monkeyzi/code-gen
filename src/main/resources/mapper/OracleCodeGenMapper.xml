@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monkeyzi.code.mapper.OracleCodeGenMapper">
+
+	<select id="queryList" resultType="map">
+
+		SELECT
+		   a.object_name "tableName",
+		   b.comments "tableComment",
+		   a.created "createTime",
+		   a.last_ddl_time "updateTime"
+		FROM
+		   user_objects a LEFT JOIN user_tab_comments b
+		   on a.object_name = b.table_name WHERE a.object_name in(
+		select table_name from user_all_tables)
+
+		<if test="tableName != null and tableName.trim() != ''">
+			AND a.object_name LIKE '%' || #{tableName} || '%'
+		</if>
+		order by a.created desc
+
+
+	</select>
+
+	<!--查询表信息-->
+	<select id="queryTable" resultType="map">
+		SELECT
+	      A .object_name  "tableName",
+		  b.comments  "tableComment",
+		  A .created "createTime"
+          FROM
+	        user_objects A
+            LEFT JOIN user_tab_comments b ON A .object_name = b.table_name
+          WHERE
+	      A .object_name = #{tableName}
+	</select>
+    <!--查询表的列信息-->
+	<select id="queryColumns" resultType="map">
+         SELECT a.COLUMN_NAME as "columnName",
+                a.data_type as "dataType",
+                b.comments as  "columnComment",
+                c.constraint_type  "columnKey"
+			FROM user_tab_columns a LEFT JOIN
+			user_col_comments b on a.column_name = b.column_name
+			left join  user_constraints c on a.table_name=c.table_name
+			WHERE a.table_name = #{tableName} AND a.table_name = b.table_name
+
+			SELECT a.COLUMN_NAME as  columnName,
+			       a.data_type as    dataType,
+			       b.comments as     columnComment,
+			       c.constraint_type columnKey
+			FROM user_tab_columns a LEFT JOIN user_col_comments b on a.column_name = b.column_name
+			WHERE a.table_name = #{tableName} AND a.table_name = b.table_name
+	</select>
+</mapper>

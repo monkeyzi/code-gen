@@ -3,12 +3,29 @@
 
 <mapper namespace="com.monkeyzi.code.mapper.MysqlCodeGenMapper">
 
+	<select id="queryList" resultType="map">
+		select
+		  table_name tableName,
+		  engine,
+		  table_comment tableComment,
+		  create_time createTime,
+		  update_time updateTime
+		  from
+		  information_schema.tables
+		where table_schema = (select database())
+		<if test="tableName != null and tableName.trim() != ''">
+			and table_name like concat('%', #{tableName}, '%')
+		</if>
+		order by create_time desc
+	</select>
+
 	<!--查询表信息-->
 	<select id="queryTable" resultType="map">
 		select table_name tableName,
 		       engine,
 		       table_comment tableComment,
-		       create_time createTime
+		       create_time createTime,
+		       update_time updateTime
 		from information_schema.tables
 		where table_schema = (select database()) and table_name = #{tableName}
 	</select>

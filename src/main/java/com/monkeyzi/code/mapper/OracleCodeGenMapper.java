@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.util.Map;
 
-public interface MysqlCodeGenMapper {
+public interface OracleCodeGenMapper {
     /**
      * 查询当前库的表信息
      * @param tableName
