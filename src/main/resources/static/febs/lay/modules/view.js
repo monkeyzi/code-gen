@@ -420,16 +420,50 @@ layui
                                 '</div></div>'
                             );
                             var params = self.fillHtml(fileurl, htmlElem, 'prepend');
-                            route.title = params.title;
-                            tab.data.push(route);
-                            layui.febs.render(tab.tabMenuTplId);
 
-                            var currentMenu = $(tab.menu + ' ' + lay);
-                            currentMenu.addClass(activeCls);
+                            var timer = null
 
-                            changeView(lay);
+                            fn()
 
-                            if ($.isFunction(callback)) callback(params)
+                            function fn() {
+                                if (timer) clearTimeout(timer)
+                                var target1 = $('#app-sidebar a[lay-href]')
+                                var target = $('#app-sidebar a[lay-href="'+fileurl+'"]')
+                                if (target1.length===0) {
+                                    timer = setTimeout(function () {
+                                        target = $('#app-sidebar a[lay-href="'+fileurl+'"]')
+                                        if (target1.length===0) {
+                                            fn()
+                                        } else {
+                                            clearTimeout(timer)
+                                            timer = null
+                                            handle(fileurl)
+                                        }
+                                    })
+                                } else {
+                                    handle(fileurl)
+                                }
+                                function handle(fileurl) {
+                                    var title = target.html()
+                                    if(fileurl === '/index') title = '系统首页'
+                                    if(title) {
+                                        params.title = title;
+                                    }
+                                    route.title = params.title;
+                                    tab.data.push(route);
+                                    layui.febs.render(tab.tabMenuTplId);
+
+                                    var currentMenu = $(tab.menu + ' ' + lay);
+                                    currentMenu.addClass(activeCls);
+
+                                    changeView(lay);
+
+                                    if ($.isFunction(callback)) callback(params)
+                                }
+                            }
+
+
+
                         })
                     }
                     layui.febs.sidebarFocus(route.href);
