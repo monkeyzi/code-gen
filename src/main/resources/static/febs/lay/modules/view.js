@@ -386,7 +386,6 @@ layui
                     if (existsTab) {
                         var menu = $(this.menu);
                         var currentMenu = menu.find(lay);
-
                         if (existsTab.href !== route.href) {
                             tab.del(existsTab.fileurl, true);
                             tab.change(route);
