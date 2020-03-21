@@ -19,7 +19,9 @@ bin/
 *.iml
 *.ipr
 rebel.xml
-
+mvnw
+mvnw.cmd
+.mvn/
 ### NetBeans ###
 nbproject/private/
 build/
