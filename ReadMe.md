@@ -73,6 +73,6 @@ code-gen项目是使用springboot,mybatis-plus,layui等实现的一款动态数�
 #### 支持作者
 如果该系统对您有帮助的话，请作者喝杯柠檬水吧🍺~
 
-![screenshot](screenshot/zfb.png)
-![screenshot](screenshot/wx.png)
+![screenshot](screenshot/zf.png)
+
 
