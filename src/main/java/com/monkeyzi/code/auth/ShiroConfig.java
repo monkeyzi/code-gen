@@ -28,7 +28,7 @@ import java.util.*;
  * @author: 高yg
  * @date: 2020/1/3 23:03
  * @qq:854152531@qq.com
- * @blog http://www.monkeyzi.xin
+ * @blog http://www.gaoyanguo.com
  * @description: shiro配置
  */
 @Configuration

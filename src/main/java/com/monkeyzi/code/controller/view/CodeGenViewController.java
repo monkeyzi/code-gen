@@ -1,5 +1,6 @@
 package com.monkeyzi.code.controller.view;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.monkeyzi.code.constant.CommonConstants;
 import com.monkeyzi.code.entity.SysGenConfig;
 import com.monkeyzi.code.service.CodeGenService;
@@ -38,9 +39,8 @@ public class CodeGenViewController {
     @RequiresPermissions("gen:view")
     public String genCode(Model model,Integer id,String tableName) {
         List<SysGenConfig> config = sysGenConfigService.list();
-        final boolean present = Optional.of(config).isPresent();
         SysGenConfig con=new SysGenConfig();
-        if (present){
+        if (CollectionUtil.isNotEmpty(config)){
             con=config.get(0);
         }
         con.setDsId(id);

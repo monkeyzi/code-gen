@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author: 高yg
  * @date: 2020/1/5 10:09
  * @qq:854152531@qq.com
- * @blog http://www.monkeyzi.xin
+ * @blog http://www.gaoyanguo.com
  * @description:
  */
 @Slf4j

@@ -1,5 +1,6 @@
 package com.monkeyzi.code.controller.view;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.monkeyzi.code.constant.CommonConstants;
 import com.monkeyzi.code.entity.SysDatasourceConf;
 import com.monkeyzi.code.entity.SysGenConfig;
@@ -23,7 +24,7 @@ import java.util.OptionalInt;
  * @author: 高yg
  * @date: 2020/1/5 10:09
  * @qq:854152531@qq.com
- * @blog http://www.monkeyzi.xin
+ * @blog http://www.gaoyanguo.com
  * @description:
  */
 @Slf4j
@@ -39,8 +40,11 @@ public class SysGenConfigViewController {
     @RequiresPermissions("config:view")
     public String generator(Model model) {
         List<SysGenConfig> config = sysGenConfigService.list();
-        final boolean present = Optional.of(config).isPresent();
-        model.addAttribute("config", present?config.get(0):null);
+        if (CollectionUtil.isNotEmpty(config)){
+            model.addAttribute("config", config.get(0));
+        }else {
+            model.addAttribute("config", null);
+        }
         return NpmsUtils.view("gen/genConfig");
     }
 

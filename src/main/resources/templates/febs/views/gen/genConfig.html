@@ -58,7 +58,10 @@
 
         form.verify(validate);
         form.render();
-        initFormValue();
+        if (config){
+            initFormValue();
+        }
+
         function initFormValue() {
             form.val("generator-configure-form", {
                 "id": config.id,

@@ -30,7 +30,7 @@ import java.util.zip.ZipOutputStream;
  * @author: 高yg
  * @date: 2020/1/2 22:32
  * @qq:854152531@qq.com
- * @blog http://www.monkeyzi.xin
+ * @blog http://www.gaoyanguo.com
  * @description:代码生成工具类
  */
 @Slf4j

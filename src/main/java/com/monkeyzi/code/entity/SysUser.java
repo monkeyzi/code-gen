@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @author: 高yg
  * @date: 2020/1/4 17:30
  * @qq:854152531@qq.com
- * @blog http://www.monkeyzi.xin
+ * @blog http://www.gaoyanguo.com
  * @description:系统用户表
  */
 @Data
