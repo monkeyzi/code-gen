@@ -79,11 +79,11 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('00000000001', '0', null, '代码生成管理', null, 'layui-icon-setting', '0', '0', null, null);
-INSERT INTO `sys_menu` VALUES ('00000000002', '1', 'gen:view', '代码生成', '/gen/code', '', '0', '1', null, null);
-INSERT INTO `sys_menu` VALUES ('00000000003', '1', 'ds:view', '数据源管理', '/ds', null, '0', '2', null, null);
-INSERT INTO `sys_menu` VALUES ('00000000004', '3', 'ds:add', '新增数据源', '', null, '1', '3', null, null);
-INSERT INTO `sys_menu` VALUES ('00000000005', '3', 'ds:update', '更新数据源', null, null, '1', '4', null, null);
+INSERT INTO `sys_menu` VALUES ('1', '0', null, '代码生成管理', null, 'layui-icon-setting', '0', '0', null, null);
+INSERT INTO `sys_menu` VALUES ('2', '1', 'gen:view', '代码生成', '/gen/code', '', '0', '1', null, null);
+INSERT INTO `sys_menu` VALUES ('3', '1', 'ds:view', '数据源管理', '/ds', null, '0', '2', null, null);
+INSERT INTO `sys_menu` VALUES ('4', '3', 'ds:add', '新增数据源', '', null, '1', '3', null, null);
+INSERT INTO `sys_menu` VALUES ('5', '3', 'ds:update', '更新数据源', null, null, '1', '4', null, null);
 
 -- ----------------------------
 -- Table structure for sys_role
