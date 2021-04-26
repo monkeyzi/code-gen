@@ -28,7 +28,7 @@
         <shiro-redis.version>3.2.10</shiro-redis.version>
         <shiro-spring.version>1.4.2</shiro-spring.version>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
-        <apache.commons.io.version>2.6</apache.commons.io.version>
+        <apache.commons.io.version>2.7</apache.commons.io.version>
         <apache.commons-configuration.version>1.10</apache.commons-configuration.version>
         <easyCaptcha.version>1.6.2</easyCaptcha.version>
     </properties>
