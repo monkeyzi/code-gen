@@ -22,7 +22,7 @@
         <hutool.version>5.0.5</hutool.version>
         <mybatis-plus-boot-starter.version>3.1.0</mybatis-plus-boot-starter.version>
         <pagehelper.version>1.2.3</pagehelper.version>
-        <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
         <velocity.version>1.7</velocity.version>
         <shiro-redis.version>3.2.10</shiro-redis.version>
